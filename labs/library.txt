@@ -2,6 +2,7 @@ LIBRARY IN REACT.JS
 front
 - react-router-dom, 
 - react-hook-form,
+- @tanstack/react-query
 - react-icons,
 - axios | use-axios-client
 - @reduxjs/toolkit | react-redux | redux-saga
