@@ -1,5 +1,5 @@
 LIBRARY IN REACT.JS
-front
+Front End
 - react-router-dom, 
 - react-hook-form,
 - @tanstack/react-query
@@ -33,11 +33,22 @@ multiple hooks
 - @uidotdev/usehooks
 - usehooks-ts
 
-back
-- express.js, 
-- cors,  
-- nodemon,
+=============================================
+
+Back End
+Both
 - dotenv
+- express, 
+- cors,  
+JS
+- nodemon,
+TS
+- @types/express
+- typescript & ts-node
+- ts-node-dev
+- @types/cors
+
+=============================================
 
 JWT : 
 - front(jwt-decode),
