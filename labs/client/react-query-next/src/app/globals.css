@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .peer-floating {
+    @apply absolute top-[29%] left-3 px-1 bg-white transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-valid:-top-2 peer-valid:text-xs pointer-events-none;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  .rm-arrow-spin::-webkit-outer-spin-button,
+  .rm-arrow-spin::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  .rm-arrow-spin[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+}
