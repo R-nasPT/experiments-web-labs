@@ -7,6 +7,12 @@
     @apply absolute top-[29%] left-3 px-1 bg-white transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-valid:-top-2 peer-valid:text-xs pointer-events-none;
   }
 
+  .text-stroke {
+    -webkit-text-stroke: 1px white;
+    text-stroke: 1px white;
+  }
+  
+  /* ===========input type number=========== */
   /* Chrome, Safari, Edge, Opera */
   .rm-arrow-spin::-webkit-outer-spin-button,
   .rm-arrow-spin::-webkit-inner-spin-button {
@@ -15,9 +21,10 @@
   }
 
   /* Firefox */
-  .rm-arrow-spin[type='number'] {
+  .rm-arrow-spin[type="number"] {
     -moz-appearance: textfield;
   }
+  /* ===========input type number=========== */
 }
 
 @layer utilities {
@@ -26,4 +33,19 @@
     padding: 0;
     margin: 0;
   }
+}
+/* ====================FONT================= */
+@font-face {
+  font-family: "spider";
+  src: url("../../public/font/Spider-Man.otf");
+}
+
+@font-face {
+  font-family: 'montserrat';
+  src: url('../../public/font/MontserratAlternates-Thin.ttf');
+}
+
+@font-face {
+  font-family: 'amazspi';
+  src: url('../../public/font/The\ Amazing\ Spider-Man.ttf');
 }

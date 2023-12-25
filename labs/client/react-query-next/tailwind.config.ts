@@ -9,8 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        "noto-sans": ["Noto Sans Thai", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        "spider-man": ["spider", "sans-serif"],
+        "Montserrat-Alternates": ["montserrat", "sans-serif"],
+        "amazing-spider": ["amazspi", "serif"],
       },
       keyframes: {
         pulse2: {
