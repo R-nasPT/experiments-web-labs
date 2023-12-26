@@ -12,7 +12,7 @@
     text-stroke: 1px white;
   }
   
-  /* ===========input type number=========== */
+  /* -------------input type number----------- */
   /* Chrome, Safari, Edge, Opera */
   .rm-arrow-spin::-webkit-outer-spin-button,
   .rm-arrow-spin::-webkit-inner-spin-button {
@@ -24,7 +24,7 @@
   .rm-arrow-spin[type="number"] {
     -moz-appearance: textfield;
   }
-  /* ===========input type number=========== */
+  /* -------------input type number------------ */
 }
 
 @layer utilities {
