@@ -13,7 +13,7 @@ import Cap from "../../assets/hero/captain-america.jpg";
 import thor from "../../assets/hero/thor1.png";
 import Strange from "../../assets/hero/dr.st.jpg";
 import BlackWidow from "../../assets/hero/BlackWidow1.jpg";
-import Deadpool from "../../assets/hero/deadpool.jpg";
+import Deadpool from "../../assets/hero/deadpool1.jpg";
 import Link from "next/link";
 
 type heroType = {
@@ -32,10 +32,7 @@ type heroType = {
 };
 
 export default function SuperheroList() {
-  const { getQuery } = useApi({
-    baseURL: "http://localhost:2077",
-    url: "heroes",
-  });
+  const { getQuery } = useApi({ baseURL: "http://localhost:2077", url: "heroes" });
   const { data, isLoading, isError, error } = getQuery;
   // console.log(data);
 
@@ -66,7 +63,7 @@ export default function SuperheroList() {
       <div className="bg-[#1B2159] grid gap-10 px-60 pb-20">
         <nav className="pt-10 text-white flex justify-between px-5">
           <Link href={'/homepage'} className="bg-red-500 px-5 py-2 rounded-lg hover:bg-red-600">BACK</Link>
-          {/* <Link className="bg-slate-600 px-5 py-2 rounded-lg">INSERT</Link> */}
+          <Link href={'/form-insert'} className="bg-slate-600 px-5 py-2 rounded-lg hover:bg-slate-700">INSERT</Link>
         </nav>
         {data.map((item: heroType) => (
           <article
@@ -85,14 +82,8 @@ export default function SuperheroList() {
                 </p>
                 <div className="flex flex-col items-center gap-5">
                   {renderDetail({ label: "REAL NAME", value: item.real_name })}
-                  {renderDetail({
-                    label: "POWERS",
-                    value: item.powers.join(", "),
-                  })}
-                  {renderDetail({
-                    label: "AFFILIATION",
-                    value: item.affiliation,
-                  })}
+                  {renderDetail({ label: "POWERS", value: item.powers.join(", ") })}
+                  {renderDetail({ label: "AFFILIATION", value: item.affiliation })}
                   {renderDetail({ label: "AGE", value: item.age })}
                   {renderDetail({
                     label: "STATUS",

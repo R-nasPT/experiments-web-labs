@@ -4,7 +4,7 @@
 
 @layer components {
   .peer-floating {
-    @apply absolute top-[29%] left-3 px-1 bg-white transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-valid:-top-2 peer-valid:text-xs pointer-events-none;
+    @apply absolute top-[27%] left-3 px-1 transition-all duration-300 peer-focus:-top-5 peer-focus:text-xs peer-valid:-top-5 peer-valid:text-xs pointer-events-none;
   }
 
   .text-stroke {
