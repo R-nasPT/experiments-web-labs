@@ -123,9 +123,12 @@ export default function SuperheroList() {
                   </div>
                 </div>
                 <div className="flex justify-between w-full">
-                  <button className="italic bg-white px-4 py-2 rounded-3xl font-semibold hover:bg-gray-300">
+                  <Link 
+                    href={`/superhero-list/${item._id}`} 
+                    className="italic bg-white px-4 py-2 rounded-3xl font-semibold hover:bg-gray-300"
+                  >
                     EDIT
-                  </button>
+                  </Link>
                   <button className="italic bg-red-500 text-red-200 px-4 py-2 rounded-3xl font-semibold hover:bg-red-600">
                     DELETE
                   </button>

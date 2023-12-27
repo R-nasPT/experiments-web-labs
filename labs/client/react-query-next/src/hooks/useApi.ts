@@ -10,7 +10,7 @@ type AxiosParams = {
   axiosInstance: AxiosInstance;
   url: string;
   newData?: any;
-  id?: number;
+  id?: number | string;
 };
 
 const createAxiosInstance = (baseURL: string): AxiosInstance => {
@@ -30,7 +30,8 @@ const createData = async ({ axiosInstance, url, newData }: AxiosParams) => {
 
 // AXIOS PUT ---
 const updateData = async ({ axiosInstance, url, newData, id }: AxiosParams) => {
-  const { data } = await axiosInstance.put(`/${url}/${id}`, newData);
+  const endpoint = id ? `/${url}/${id}` : `/${url}`;
+  const { data } = await axiosInstance.put(endpoint, newData);
   return data;
 };
 
@@ -60,15 +61,15 @@ function useApi({ baseURL, url }: ApiHookProps) {
   });
 
   //EDIT ---
-  const updateMutation = useMutation({
-    mutationFn: ({ id, newData }: { id: number; newData: any }) =>
+  const updateMutation = useMutation({ //-- id จะระบุหรือไม่ก็ได้
+    mutationFn: ({ id, newData }: { id?: number | string; newData: any }) =>
       updateData({ axiosInstance, url, newData, id }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["editData"] }),
   });
 
   //REMOVE ---
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteData({ axiosInstance, url, id }),
+    mutationFn: (id: number | string) => deleteData({ axiosInstance, url, id }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["removeData"] }),
   });
 

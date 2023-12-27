@@ -1,51 +1,84 @@
 "use client";
-import { useForm, SubmitHandler } from "react-hook-form";
-import InputFloatText from "../../components/input/input-float-text";
-import { Fragment } from "react";
+
 import InputFloatNumber from "@/components/input/input-float-number";
-import Image from "next/image";
-import BG from "../../assets/hero/705204.jpg";
+import InputFloatText from "@/components/input/input-float-text";
 import InputSelect from "@/components/input/input-select";
-import useApi from "@/hooks/useApi";
+import Image from "next/image";
 import Link from "next/link";
+import BG from "../../../assets/hero/af5uskv42v3z.jpg";
+import { SubmitHandler, useForm } from "react-hook-form";
+import useApi from "@/hooks/useApi";
+import { useEffect } from "react";
 
-type HeroCharacterFormData = {
-  name: string;
-  real_name: string;
-  powers: string[];
-  affiliation: string;
-  age: number;
-  status: boolean;
-  height: number;
-  weight: number;
-  universe: string;
-};
+type HeroFormDataUpdate = {
+    name: string;
+    real_name: string;
+    powers: string[];
+    affiliation: string;
+    age: number;
+    status: boolean;
+    height: number;
+    weight: number;
+    universe: string;
+  };
 
-export default function FormInsert() {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<HeroCharacterFormData>({ mode: "all" });
+  type Props = {
+    params: {
+      id: number | string
+    }
+  }
 
-  const { createMutation } = useApi({ baseURL: "http://localhost:2077", url: "heroes" });
-  // const { mutate } = createMutation;
+export default function FormUpdate({ params }: Props ) {
+  const { id } = params
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<HeroFormDataUpdate>({ mode: "all" });
+  const { getQuery, updateMutation } = useApi({ baseURL: "http://localhost:2077", url: `heroes/${id}` });
+  const { data, isLoading, isError, error} = getQuery;
+  const { mutate } = updateMutation;
 
-  const onHandlerSubmit: SubmitHandler<HeroCharacterFormData> = (data) => {
-    createMutation.mutate({
-      name: data.name,
-      real_name: data.real_name,
-      powers: data.powers,
-      affiliation: data.affiliation,
-      age: data.age,
-      status: data.status,
-      appearance: {
-        height: data.height,
-        weight: data.weight,
+  const onHandlerSubmit: SubmitHandler<HeroFormDataUpdate> = (data) => {
+    mutate({
+      newData: {
+        name: data.name,
+        real_name: data.real_name,
+        powers: data.powers,
+        affiliation: data.affiliation,
+        age: data.age,
+        status: data.status,
+        appearance: {
+          height: data.height,
+          weight: data.weight,
+        },
+        universe: data.universe,
       },
-      universe: data.universe,
     });
     console.log(data);
   };
 
+    useEffect(() => {
+      if (data) {
+        setValue("name", data.name)
+        setValue("real_name", data.real_name);
+        // setValue("powers", data.powers.join(', ')); // array
+        setValue("powers", data.powers); // array
+        setValue("affiliation", data.affiliation);
+        setValue("age", data.age);
+        setValue("status", data.status?.toString()); // boolean
+        setValue("height", data.appearance?.height);
+        setValue("weight", data.appearance?.weight);
+        setValue("universe", data.universe);
+      }
+    }, [data, setValue])
+
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
+  
+    if (isError) {
+      return <p>Error: {error.message}</p>;
+    }  
+
   return (
-    <Fragment>
+    <>
       <div className="min-h-screen flex flex-col justify-center items-center">
         <Image
           src={BG}
@@ -57,7 +90,7 @@ export default function FormInsert() {
         />
         <main>
           <h1 className="font-spider-man text-5xl pl-5 bg-clip-text text-transparent bg-gradient-to-r from-red-500 from-10% via-blue-500 via-30% to-yellow-500 to-90%">
-            Add New Hero Character
+            Edit Hero Character
           </h1>
           <section className="bg-gradient-to-r from-red-500 from-10% via-blue-500 via-30% to-yellow-500 to-90% opacity-80 rounded-2xl">
             <article className="bg-black opacity-70 rounded-2xl">
@@ -138,6 +171,6 @@ export default function FormInsert() {
           </section>
         </main>
       </div>
-    </Fragment>
+    </>
   );
 }
