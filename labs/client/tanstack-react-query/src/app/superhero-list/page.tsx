@@ -11,9 +11,22 @@ import wonder from "../../assets/hero/wonder.jpg";
 import BlackPan from "../../assets/hero/Panther-Black.webp";
 import Cap from "../../assets/hero/captain-america.jpg";
 import thor from "../../assets/hero/thor1.png";
-import Strange from "../../assets/hero/dr.st.jpg";
+import Strange from "../../assets/hero/doctor-strange.jpg";
 import BlackWidow from "../../assets/hero/BlackWidow1.jpg";
 import Deadpool from "../../assets/hero/deadpool1.jpg";
+import Superman from "../../assets/hero/superman1.jpg";
+import Batman from "../../assets/hero/batman.png";
+import Flash from "../../assets/hero/flash.jpg";
+import Aquaman from "../../assets/hero/Aquaman1.webp";
+import Wolverine from "../../assets/hero/logan.jpg";
+import DrFate from "../../assets/hero/drfate.jpg";
+import Hawkman from "../../assets/hero/hm.jpg";
+import MrFantastic from "../../assets/hero/Mr.Fantastic.jpg";
+import HumanTorch from "../../assets/hero/Human Torch.jpg";
+import Ikaris from "../../assets/hero/Ikaris1.jpg";
+import StarLord from "../../assets/hero/Star-Lord.jpg";
+import GreenLantern from "../../assets/hero/green-lantern.jpg";
+import defaultImg from "../../assets/hero/all.webp";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import LoadingAnimation from "@/components/loading/LoadingAnimation";
@@ -78,8 +91,18 @@ export default function SuperheroList() {
     "Doctor Strange": Strange,
     "Black Widow": BlackWidow,
     "Deadpool": Deadpool,
-    // "Batman": Batman,
-    // "Superman": Superman,
+    "Superman": Superman,
+    "Batman": Batman,
+    "The Flash": Flash,
+    "Aquaman": Aquaman,
+    "Wolverine": Wolverine,
+    "Doctor Fate": DrFate,
+    "Hawkman": Hawkman,
+    "Mr.Fantastic": MrFantastic,
+    "Human Torch": HumanTorch,
+    "Ikaris": Ikaris,
+    "Star-Lord": StarLord,
+    "Green Lantern": GreenLantern,
   };
 
   return (
@@ -161,13 +184,19 @@ export default function SuperheroList() {
                   </button>
                 </div>
               </div>
-              {item.name && heroImages[item.name] && (
+              {item.name && heroImages[item.name] ? (
                 <Image
                   src={heroImages[item.name]}
                   alt="profile"
                   className="w-1/2 h-[700px] rounded-2xl object-cover"
                 />
-              )}
+                ) : (
+                  <Image
+                    src={defaultImg}
+                    alt="profile"
+                    className="w-1/2 h-[700px] rounded-2xl object-cover"
+                  />
+                )}
             </div>
           </article>
         ))}
