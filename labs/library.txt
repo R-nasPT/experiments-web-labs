@@ -27,6 +27,7 @@ text animate
 - react-countup
 - react-text-loop | react-text-loop-next
 - react-fast-marquee
+- react-fade-in
 
 multiple hooks
 - react-use,
