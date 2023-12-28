@@ -8,6 +8,8 @@ import BG from "../../assets/hero/705204.jpg";
 import InputSelect from "@/components/input/input-select";
 import useApi from "@/hooks/useApi";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 type HeroCharacterFormData = {
   name: string;
@@ -22,26 +24,57 @@ type HeroCharacterFormData = {
 };
 
 export default function FormInsert() {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<HeroCharacterFormData>({ mode: "all" });
-
   const { createMutation } = useApi({ baseURL: "http://localhost:2077", url: "heroes" });
-  // const { mutate } = createMutation;
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<HeroCharacterFormData>({ mode: "all" });
+  const router = useRouter();
 
-  const onHandlerSubmit: SubmitHandler<HeroCharacterFormData> = (data) => {
-    createMutation.mutate({
-      name: data.name,
-      real_name: data.real_name,
-      powers: data.powers,
-      affiliation: data.affiliation,
-      age: data.age,
-      status: data.status,
-      appearance: {
-        height: data.height,
-        weight: data.weight,
-      },
-      universe: data.universe,
+  const onHandlerSubmit: SubmitHandler<HeroCharacterFormData> = async (data) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to save this hero character?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#00d1b2",
+      cancelButtonColor: "#f14668",
     });
-    console.log(data);
+
+    if (result.isConfirmed) {
+      Swal.fire({
+        icon: "success",
+        title: "Saved!",
+        text: "Hero character has been saved.",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        router.push("/superhero-list");
+      });
+      //-- react-query --
+      createMutation.mutate({
+        name: data.name,
+        real_name: data.real_name,
+        powers: data.powers,
+        affiliation: data.affiliation,
+        age: data.age,
+        status: data.status,
+        appearance: {
+          height: data.height,
+          weight: data.weight,
+        },
+        universe: data.universe,
+      });
+      console.log(data);
+
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Cancelled!",
+        text: "Hero character was not saved.",
+        showConfirmButton: false,
+        timer: 1000
+      });
+    }
   };
 
   return (

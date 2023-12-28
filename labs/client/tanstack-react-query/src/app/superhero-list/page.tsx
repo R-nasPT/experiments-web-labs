@@ -15,6 +15,8 @@ import Strange from "../../assets/hero/dr.st.jpg";
 import BlackWidow from "../../assets/hero/BlackWidow1.jpg";
 import Deadpool from "../../assets/hero/deadpool1.jpg";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import LoadingAnimation from "@/components/loading/LoadingAnimation";
 
 type heroType = {
   _id: any;
@@ -32,12 +34,34 @@ type heroType = {
 };
 
 export default function SuperheroList() {
-  const { getQuery } = useApi({ baseURL: "http://localhost:2077", url: "heroes" });
+  const { getQuery, deleteMutation } = useApi({ baseURL: "http://localhost:2077", url: "heroes" });
   const { data, isLoading, isError, error } = getQuery;
-  // console.log(data);
+  const { mutate } = deleteMutation;
+
+  const handleDelete = async (itemId: string | number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to save this hero character?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#00d1b2",
+      cancelButtonColor: "#f14668",
+    });
+
+    if (result.isConfirmed) {
+      //react-query
+      mutate(itemId)
+
+      Swal.fire('Deleted!', 'Hero character has been deleted.', 'success').then(() => {
+        window.location.reload();
+      });
+    }
+  }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingAnimation />;
   }
 
   if (isError) {
@@ -129,7 +153,10 @@ export default function SuperheroList() {
                   >
                     EDIT
                   </Link>
-                  <button className="italic bg-red-500 text-red-200 px-4 py-2 rounded-3xl font-semibold hover:bg-red-600">
+                  <button 
+                    className="italic bg-red-500 text-red-200 px-4 py-2 rounded-3xl font-semibold hover:bg-red-600"
+                    onClick={() => handleDelete(item._id)}
+                  >
                     DELETE
                   </button>
                 </div>

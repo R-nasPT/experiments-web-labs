@@ -9,6 +9,8 @@ import BG from "../../../assets/hero/af5uskv42v3z.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useApi from "@/hooks/useApi";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 type HeroFormDataUpdate = {
     name: string;
@@ -33,25 +35,59 @@ export default function FormUpdate({ params }: Props ) {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<HeroFormDataUpdate>({ mode: "all" });
   const { getQuery, updateMutation } = useApi({ baseURL: "http://localhost:2077", url: `heroes/${id}` });
   const { data, isLoading, isError, error} = getQuery;
-  const { mutate } = updateMutation;
+  const { mutateAsync } = updateMutation;
+  const router = useRouter();
 
-  const onHandlerSubmit: SubmitHandler<HeroFormDataUpdate> = (data) => {
-    mutate({
-      newData: {
-        name: data.name,
-        real_name: data.real_name,
-        powers: data.powers,
-        affiliation: data.affiliation,
-        age: data.age,
-        status: data.status,
-        appearance: {
-          height: data.height,
-          weight: data.weight,
-        },
-        universe: data.universe,
-      },
+  const onHandlerSubmit: SubmitHandler<HeroFormDataUpdate> = async (data) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to edit this hero character?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#00d1b2",
+      cancelButtonColor: "#f14668",
     });
-    console.log(data);
+
+    if (result.isConfirmed) {
+      Swal.fire({
+        icon: "success",
+        title: "Update!",
+        text: "Hero character has been update.",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        router.refresh();
+      });
+      // -- react-query --
+      await mutateAsync({
+        newData: {
+          name: data.name,
+          real_name: data.real_name,
+          powers: data.powers,
+          affiliation: data.affiliation,
+          age: data.age,
+          status: data.status,
+          appearance: {
+            height: data.height,
+            weight: data.weight,
+          },
+          universe: data.universe,
+        },
+      });
+      console.log(data);
+
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Cancelled!",
+        text: "Hero character was not update.",
+        showConfirmButton: false,
+        timer: 1000
+      });
+    }
+
   };
 
     useEffect(() => {
@@ -151,15 +187,15 @@ export default function FormUpdate({ params }: Props ) {
                     type="button"
                     onClick={() =>
                       reset({
-                        name: "Green Lantern",
-                        real_name: "Hal Jordan",
-                        powers: ["Green Power Ring","Flight","Construct Creation"],
-                        affiliation: "Green Lantern Corps",
-                        age: 32,
-                        status: true,
-                        height: 186,
-                        weight: 90,
-                        universe: "DC",
+                        name: data.name,
+                        real_name: data.real_name,
+                        powers: data.powers,
+                        affiliation: data.affiliation,
+                        age: data.age,
+                        status: data.status?.toString(),
+                        height: data.appearance?.height,
+                        weight: data.appearance?.weight,
+                        universe: data.universe,
                       })
                     }
                   >
