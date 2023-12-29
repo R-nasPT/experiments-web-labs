@@ -23,20 +23,20 @@ const getData = async ({ axiosInstance, url }: AxiosParams): Promise<any> => {
 };
 
 // AXIOS POST ---
-const createData = async ({ axiosInstance, url, newData }: AxiosParams) => {
+const createData = async ({ axiosInstance, url, newData }: AxiosParams): Promise<any> => {
   const { data } = await axiosInstance.post(`/${url}`, newData);
   return data;
 };
 
 // AXIOS PUT ---
-const updateData = async ({ axiosInstance, url, newData, id }: AxiosParams) => {
+const updateData = async ({ axiosInstance, url, newData, id }: AxiosParams): Promise<any> => {
   const endpoint = id ? `/${url}/${id}` : `/${url}`;
   const { data } = await axiosInstance.put(endpoint, newData);
   return data;
 };
 
 // AXIOS DELETE ---
-const deleteData = async ({ axiosInstance, url, id }: AxiosParams) => {
+const deleteData = async ({ axiosInstance, url, id }: AxiosParams): Promise<any> => {
   const { data } = await axiosInstance.delete(`/${url}/${id}`);
   return data;
 };

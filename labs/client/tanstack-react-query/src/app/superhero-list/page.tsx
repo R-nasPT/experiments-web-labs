@@ -1,7 +1,11 @@
 "use client";
 import Image from "next/image";
-import marvel from "../../assets/MARVEL Vector.svg";
 import useApi from "../../hooks/useApi";
+import Link from "next/link";
+import Swal from "sweetalert2";
+import LoadingAnimation from "@/components/loading/LoadingAnimation";
+// picture
+import marvel from "../../assets/MARVEL Vector.svg";
 import true1 from "../../assets/green-lantern.png";
 import false1 from "../../assets/captain-america.png";
 import DC from "../../assets/DC-2005-2012.png";
@@ -27,9 +31,6 @@ import Ikaris from "../../assets/hero/Ikaris1.jpg";
 import StarLord from "../../assets/hero/Star-Lord.jpg";
 import GreenLantern from "../../assets/hero/green-lantern.jpg";
 import defaultImg from "../../assets/hero/all.webp";
-import Link from "next/link";
-import Swal from "sweetalert2";
-import LoadingAnimation from "@/components/loading/LoadingAnimation";
 
 type heroType = {
   _id: any;
