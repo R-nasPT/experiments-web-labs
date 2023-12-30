@@ -24,7 +24,7 @@ const useResponse = <T>(baseUrl: string) => {
     try {
       let response: AxiosResponse<T>;
 
-      switch (method.toUpperCase()) {
+      switch (method.toLowerCase()) {
         case "get":
           response = await axiosInstance.get<T>(url);
           break;

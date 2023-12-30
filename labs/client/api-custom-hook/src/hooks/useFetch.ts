@@ -9,7 +9,7 @@ interface ApiHookResult<T> {
 //   fetchData: (url: string, method?: 'GET' | 'POST' | 'PUT' | 'DELETE', body?: any) => Promise<void>;
 }
 
-const useApi = <T>(baseUrl: string): ApiHookResult<T> => {
+const useFetch = <T>(baseUrl: string): ApiHookResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<AxiosError<T> | null>(null);
@@ -52,4 +52,4 @@ const useApi = <T>(baseUrl: string): ApiHookResult<T> => {
   return { data, loading, error, fetchData };
 };
 
-export default useApi;
+export default useFetch;
