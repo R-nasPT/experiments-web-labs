@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "spider-man": ["spider", "sans-serif"],
+        "Montserrat-Alternates": ["montserrat", "sans-serif"],
+        "amazing-spider": ["amazspi", "serif"],
+      },
+    },
   },
   plugins: [],
 }
