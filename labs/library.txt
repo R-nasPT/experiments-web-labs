@@ -5,7 +5,7 @@ Front End
 - @tanstack/react-query
 - react-icons,
 - axios | use-axios-client
-- @reduxjs/toolkit | react-redux | redux-saga
+- @reduxjs/toolkit | react-redux
 - zustand,
 - react-select,
 - react-animate-height (dropdownSlide),
