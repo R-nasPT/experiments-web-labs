@@ -3,7 +3,7 @@ Front End
 - react-router-dom, 
 - react-hook-form,
 - @tanstack/react-query
-- react-icons,
+- react-icons | lucide,
 - axios | use-axios-client
 - @reduxjs/toolkit | react-redux
 - zustand,
