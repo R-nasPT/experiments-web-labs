@@ -17,6 +17,23 @@ function LoadingRow() {
           <div className={`h-4 w-${width} animate-pulse rounded-md bg-[#e1e1e1]`}></div>
         </td>
       ))}
+      
+      {/* Mobile */}
+      <td className='block lg:hidden'>
+        <div className='flex justify-between px-4'>
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className='h-4 w-11 animate-pulse rounded-md bg-[#e1e1e1]'></div>
+          ))}
+        </div>
+      </td>
+      <hr className='my-2 border border-solid border-[#e8e8e8] lg:hidden' />
+      <td className='block lg:hidden'>
+        <div className='flex justify-between px-2'>
+          {Array.from({ length: 2 }, (_, index) => (
+            <div key={index} className='h-4 w-14 animate-pulse rounded-md bg-[#e1e1e1]'></div>
+          ))}
+        </div>
+      </td>
     </tr>
   )
 }
