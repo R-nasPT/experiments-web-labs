@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .peer-floating {
+    @apply absolute top-[27%] left-3 px-1 transition-all duration-300 peer-focus:-top-5 peer-focus:text-xs peer-valid:-top-5 peer-valid:text-xs pointer-events-none;
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 1px white;
+    text-stroke: 1px white;
+  }
+
+  /* -------------input type number----------- */
+  /* Chrome, Safari, Edge, Opera */
+  .rm-arrow-spin::-webkit-outer-spin-button,
+  .rm-arrow-spin::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  .rm-arrow-spin[type="number"] {
+    -moz-appearance: textfield;
+  }
+  /* -------------input type number------------ */
+}
+
+@layer utilities {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+}
