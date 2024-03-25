@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import BG from "@/assets/705204.jpg";
+import BG from "@/assets/437561.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import InputFloatText from "@/components/input/input-float-text";
 import InputFloatNumber from "@/components/input/input-float-number";
