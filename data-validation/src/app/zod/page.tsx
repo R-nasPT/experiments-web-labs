@@ -21,6 +21,7 @@ type HeroCharacterFormData = {
   password: string;
   url: string;
   tel: string;
+  nullified: string;
 };
 
 const schema = z.object({
@@ -31,16 +32,31 @@ const schema = z.object({
   age: z.number().int().positive(), // ต้องเป็นจำนวนเต็ม
   status: z.boolean(),
   universe: z.enum(["Marvel", "DC"]), // ต้องเป็นค่าใน enum Marvel หรือ DC เท่านั้น
-  date: z.date(),
+  date: z.date().optional(),
   time: z.string(), // Zod ไม่มีชนิดข้อมูลเวลา แต่คุณสามารถใช้ string ได้
   datetime: z.string(), // Zod ไม่มีชนิดข้อมูล datetime-local แต่คุณสามารถใช้ string ได้
   email: z
     .string()
     .min(1, { message: "Email is required" })
     .email({ message: "Must be a valid email" }),
-  password: z.string(),
-  url: z.string().url(),
-  tel: z.string(),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
+  url: z.string().url("Must be a valid URL").min(1, "URL is required"),
+  tel: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(12, "Phone number cannot exceed 12 digits")
+    .regex(/^\d+$/, "Phone number must contain only digits")
+    .optional(),
+  nullified: z
+    .string()
+    .regex(/^[^0-9]*$/, "Cannot be a number")
+    .nullable(),
 });
 export default function Zod() {
   const {
@@ -116,21 +132,57 @@ export default function Zod() {
                       className="p-2 rounded-md"
                       {...register("date")}
                     />
-                    <p className="text-red-500">{errors.date && "asdasdads"}</p>
+                    <p className="text-red-500">{errors.date?.message}</p>
                   </div>
 
                   <input type="time" className="p-2 rounded-md" />
                   <input type="datetime-local" className="p-2 rounded-md" />
                   <input
+                    placeholder="Email"
                     type="email"
                     className="p-2 rounded-md"
                     {...register("email")}
                   />
                   {/* <p>{errors.email && errors.email.message}</p> */}
-                  {errors.email?.message && <span>{errors.email.message}</span>}
-                  <input type="password" className="p-2 rounded-md" />
-                  <input type="url" className="p-2 rounded-md" />
-                  <input type="tel" className="p-2 rounded-md" />
+                  {errors.email?.message && (
+                    <p className="text-red-500">{errors.email.message}</p>
+                  )}
+                  <input
+                    placeholder="Password"
+                    type="password"
+                    className="p-2 rounded-md"
+                    {...register("password")}
+                  />
+                  {errors.password?.message && (
+                    <p className="text-red-500">{errors.password?.message}</p>
+                  )}
+                  <input
+                    placeholder="URL"
+                    type="url"
+                    className="p-2 rounded-md"
+                    {...register("url")}
+                  />
+                  {errors.url?.message && (
+                    <p className="text-red-500">{errors.url?.message}</p>
+                  )}
+                  <input
+                    placeholder="Phone Number"
+                    type="tel"
+                    className="p-2 rounded-md"
+                    {...register("tel")}
+                  />
+                  {errors.tel?.message && (
+                    <p className="text-red-500">{errors.tel?.message}</p>
+                  )}
+                  <input
+                    placeholder="nullified"
+                    type="text"
+                    className="p-2 rounded-md"
+                    {...register("nullified")}
+                  />
+                  {errors.nullified?.message && (
+                    <p className="text-red-500">{errors.nullified?.message}</p>
+                  )}
                 </section>
                 <div className="flex justify-center gap-20 pl-3">
                   <Link

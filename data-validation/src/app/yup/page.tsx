@@ -18,10 +18,10 @@ type HeroCharacterFormData = {
   email?: string | undefined;
   // time: string;
   // datetime: string;
-  // email: string;
   password: string;
   url: string;
   tel: string;
+  nullified?: string | null | undefined;
 };
 
 const schema = yup.object().shape({
@@ -53,8 +53,15 @@ const schema = yup.object().shape({
     .min(10, "Phone number must be at least 10 digits")
     .max(12, "Phone number cannot exceed 12 digits")
     .required("Phone number is required"),
+  nullified: yup
+    .string()
+    .nullable()
+    .matches(/^[^0-9]*$/, {
+      message: "Cannot be a number",
+      excludeEmptyString: true, //ใช้เพื่อให้การตรวจสอบไม่รวมค่าว่างด้วย
+    }),
 });
-type FormData = yup.InferType<typeof schema>;
+type FormData = yup.InferType<typeof schema>; //<--- สามารถใช้แทน HeroCharacterFormData ได้
 
 export default function Yup() {
   const {
@@ -140,11 +147,45 @@ export default function Yup() {
                     className="p-2 rounded-md"
                     {...register("email")}
                   />
-                  {/* <p>{errors.email && errors.email.message}</p> */}
-                  {errors.email?.message && <span>{errors.email.message}</span>}
-                  <input type="password" className="p-2 rounded-md" />
-                  <input type="url" className="p-2 rounded-md" />
-                  <input type="tel" className="p-2 rounded-md" />
+                  {errors.email?.message && (
+                    <span className="text-red-500">{errors.email.message}</span>
+                  )}
+                  <input
+                    placeholder="Password"
+                    type="password"
+                    className="p-2 rounded-md"
+                    {...register("password")}
+                  />
+                  {errors.password?.message && (
+                    <p className="text-red-500">{errors.password?.message}</p>
+                  )}
+                  <input
+                    placeholder="URL"
+                    type="url"
+                    className="p-2 rounded-md"
+                    {...register("url")}
+                  />
+                  {errors.url?.message && (
+                    <p className="text-red-500">{errors.url?.message}</p>
+                  )}
+                  <input
+                    placeholder="Phone Number"
+                    type="tel"
+                    className="p-2 rounded-md"
+                    {...register("tel")}
+                  />
+                  {errors.tel?.message && (
+                    <p className="text-red-500">{errors.tel?.message}</p>
+                  )}
+                  <input
+                    placeholder="nullified"
+                    type="text"
+                    className="p-2 rounded-md"
+                    {...register("nullified")}
+                  />
+                  {errors.nullified?.message && (
+                    <p className="text-red-500">{errors.nullified?.message}</p>
+                  )}
                 </section>
                 <div className="flex justify-center gap-20 pl-3">
                   <Link
