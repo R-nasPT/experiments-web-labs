@@ -22,6 +22,7 @@ type HeroCharacterFormData = {
   url: string;
   tel: string;
   nullified?: string | null | undefined;
+  repeat_password: string;
 };
 
 const schema = yup.object().shape({
@@ -46,6 +47,10 @@ const schema = yup.object().shape({
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
       "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number"
     ),
+  repeat_password: yup
+    .string()
+    .oneOf([yup.ref("password"), undefined], "Passwords must match")
+    .required("Repeat password is required"),
   url: yup.string().url("Must be a valid URL").required("URL is required"),
   tel: yup
     .string()
@@ -158,6 +163,17 @@ export default function Yup() {
                   />
                   {errors.password?.message && (
                     <p className="text-red-500">{errors.password?.message}</p>
+                  )}
+                  <input
+                    placeholder="repeat_password"
+                    type="password"
+                    className="p-2 rounded-md"
+                    {...register("repeat_password")}
+                  />
+                  {errors.repeat_password?.message && (
+                    <p className="text-red-500">
+                      {errors.repeat_password?.message}
+                    </p>
                   )}
                   <input
                     placeholder="URL"

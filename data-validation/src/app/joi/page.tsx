@@ -1,89 +1,87 @@
 "use client";
+import { useForm, SubmitHandler } from "react-hook-form";
+import Joi from "joi";
+import { joiResolver } from "@hookform/resolvers/joi";
 import Image from "next/image";
+import BG from "@/assets/JD35FuU2.jpg";
 import Link from "next/link";
-import BG from "@/assets/705204.jpg";
-import { useForm } from "react-hook-form";
-import InputFloatText from "@/components/input/input-float-text";
-import InputFloatNumber from "@/components/input/input-float-number";
 import InputSelect from "@/components/input/input-select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
-type HeroCharacterFormData = {
+type IFormInput = {
   name: string;
   age: number;
-  status: boolean;
+  // status: boolean;
   universe: "Marvel" | "DC";
-  date: string;
-  time: string;
-  datetime: string;
-  email: string;
+  // date?: Date | undefined;
+  // email?: string | undefined;
   password: string;
+  repeat_password: string;
   url: string;
   tel: string;
-  nullified: string;
-  repeat_password: string;
+  nullified?: string | null | undefined;
 };
 
-const schema = z.object({
-  name: z
-    .string()
-    .min(1, { message: "กรุณากรอกชื่อ" })
-    .max(30, { message: "เยอะเกินไปแล้ว" }),
-  age: z.number().int().positive(), // ต้องเป็นจำนวนเต็ม
-  status: z.boolean(),
-  universe: z.enum(["Marvel", "DC"]), // ต้องเป็นค่าใน enum Marvel หรือ DC เท่านั้น
-  date: z.date().optional(),
-  time: z.string(), // Zod ไม่มีชนิดข้อมูลเวลา แต่คุณสามารถใช้ string ได้
-  datetime: z.string(), // Zod ไม่มีชนิดข้อมูล datetime-local แต่คุณสามารถใช้ string ได้
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Must be a valid email" }),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$/,
-      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-    ),
-  url: z.string().url("Must be a valid URL").min(1, "URL is required"),
-  tel: z
-    .string()
-    .min(10, "Phone number must be at least 10 digits")
-    .max(12, "Phone number cannot exceed 12 digits")
-    .regex(/^\d+$/, "Phone number must contain only digits")
-    .optional(),
-  nullified: z
-    .string()
-    .regex(/^[^0-9]*$/, "Cannot be a number")
-    .nullable(),
-  repeat_password: z.string()
-  // .refine((data) => data === schema.password, {
-  //   message: "Passwords do not match",
-  //   path: ["repeat_password"],
+const schema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.base": `"Name" should be a type of 'text'`,
+    "string.empty": `"Name" cannot be an empty field`,
+    "any.required": "Name is required 555",
+  }),
+  age: Joi.number().required().positive().integer().messages({
+    "number.base": "Age must be a number",
+    "number.positive": "Age must be a positive number",
+    "number.integer": "Age must be an integer",
+    "any.required": "Age is required",
+  }),
+  // status: Joi.boolean().required().messages({
+  //   "any.required": "Status is required",
   // }),
-  })
-  .refine((data) => data.password === data.repeat_password, {
-    message: "Passwords do not match",
-    path: ["repeat_password"],
+  universe: Joi.string().valid("Marvel", "DC").required().messages({
+    "any.only": 'Universe must be either "Marvel" or "DC"',
+    "any.required": "Universe is required",
+  }),
+  // email: Joi.string().email().messages({
+  //   "string.email": "Must be a valid email",
+  // }),
+  password: Joi.string()
+    .required()
+    .pattern(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+      "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number555"
+    )
+    .messages({
+      "string.pattern.base":
+        "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number6666",
+      "any.required": "Password is required",
+    }),
+  repeat_password: Joi.ref("password"),
+  url: Joi.string().uri().required().messages({
+    "string.uri": "Must be a valid URL",
+    "any.required": "URL is required",
+  }),
+  tel: Joi.string().pattern(/^\d+$/).min(10).max(12).required().messages({
+    "string.pattern.base": "Phone number must contain only digits",
+    "string.min": "Phone number must be at least 10 digits",
+    "string.max": "Phone number cannot exceed 12 digits",
+    "any.required": "Phone number is required",
+  }),
+  nullified: Joi.string()
+    .allow(null, "")
+    .pattern(/^[^0-9]*$/, "Cannot be a number"),
 });
 
-type FormData = z.infer<typeof schema>; //<--- สามารถใช้แทน HeroCharacterFormData ได้
-
-export default function Zod() {
+export default function JOI() {
   const {
-    handleSubmit,
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm<HeroCharacterFormData>({
-    resolver: zodResolver(schema),
+  } = useForm<IFormInput>({
+    resolver: joiResolver(schema),
     mode: "all",
   });
 
-  const onHandlerSubmit = (data: HeroCharacterFormData) => {
+  const onHandlerSubmit: SubmitHandler<IFormInput> = (data) =>
     console.log(data);
-  };
 
   return (
     <>
@@ -98,7 +96,7 @@ export default function Zod() {
         />
         <main>
           <h1 className="font-spider-man text-5xl pl-5 bg-clip-text text-transparent bg-gradient-to-r from-red-500 from-10% via-blue-500 via-30% to-yellow-500 to-90%">
-            Add New Hero Character
+            Add New
           </h1>
           <section className="bg-gradient-to-r from-red-500 from-10% via-blue-500 via-30% to-yellow-500 to-90% opacity-80 rounded-2xl">
             <article className="bg-black opacity-70 rounded-2xl">
@@ -107,12 +105,15 @@ export default function Zod() {
                 onSubmit={handleSubmit(onHandlerSubmit)}
               >
                 <section className="grid grid-cols-2 items-center gap-10">
-                  <InputFloatText
-                    label="name"
-                    message="NAME HERO"
-                    register={register}
-                    errors={errors}
-                  />
+                  <div>
+                    <input
+                      placeholder="Name"
+                      type="text"
+                      className="p-2 rounded-md"
+                      {...register("name")}
+                    />
+                    <p className="text-red-500">{errors.name?.message}</p>
+                  </div>
                   <input
                     placeholder="age"
                     type="number"
@@ -122,47 +123,24 @@ export default function Zod() {
                   {errors.age?.message && (
                     <p className="text-red-500">{errors.age?.message}</p>
                   )}
-                  <div className="flex gap-10">
-                    <InputSelect
-                      label="status"
-                      register={register}
-                      errors={errors}
-                      options={[
-                        { value: "true", label: "TRUE" },
-                        { value: "false", label: "FALSE" },
-                      ]}
-                    />
-                    <InputSelect
-                      label="universe"
-                      register={register}
-                      errors={errors}
-                      options={[
-                        { value: "Marvel", label: "Marvel" },
-                        { value: "DC", label: "DC" },
-                      ]}
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="date"
-                      className="p-2 rounded-md"
-                      {...register("date")}
-                    />
-                    <p className="text-red-500">{errors.date?.message}</p>
-                  </div>
-
-                  <input type="time" className="p-2 rounded-md" />
-                  <input type="datetime-local" className="p-2 rounded-md" />
-                  <input
+                  <InputSelect
+                    label="universe"
+                    register={register}
+                    errors={errors}
+                    options={[
+                      { value: "Marvel", label: "Marvel" },
+                      { value: "DC", label: "DC" },
+                    ]}
+                  />
+                  {/* <input
                     placeholder="Email"
                     type="email"
                     className="p-2 rounded-md"
                     {...register("email")}
                   />
-                  {/* <p>{errors.email && errors.email.message}</p> */}
                   {errors.email?.message && (
                     <p className="text-red-500">{errors.email.message}</p>
-                  )}
+                  )} */}
                   <input
                     placeholder="Password"
                     type="password"

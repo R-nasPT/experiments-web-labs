@@ -19,6 +19,12 @@ export default function Homepage() {
           >
             YUP
           </Link>
+          <Link
+            href="/joi"
+            className="bg-green-500 p-2 rounded-lg text-white text-center font-mono w-20"
+          >
+            JOI
+          </Link>
         </div>
       </div>
     </>
